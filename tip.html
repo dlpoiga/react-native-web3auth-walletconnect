@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Web3Auth</title>
+
+      </head>
+
+      <body style="margin: 0; padding: 0; height: 100vh;">
+        <script src="https://cdn.jsdelivr.net/npm/@web3auth/modal/dist/modal.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@web3auth/openlogin-adapter/dist/openloginAdapter.umd.min.js"></script>
+        <script>
+          var Web3Auth = window?.Modal?.Web3Auth; 
+          var OpenloginAdapter = window?.OpenloginAdapter?.OpenloginAdapter;
+          var clientId = "BOlxPsBPDyYBzbd-q6j2JKoC73vYwEURQdATs-DUPr_p5tKuvfQ89JxkwR7HKmcA-JDu8uR7OOlc8U6vOXpScn0"
+
+          var shouldPostMessage = data => {
+            if (window.ReactNativeWebView) {
+              return window.ReactNativeWebView.postMessage(data);
+            }
+          };
+
+          var connectFunction = async () => {
+            try {
+              const web3auth = new Web3Auth({
+                chainConfig: {chainNamespace: "eip155", chainId: "0x1", rpcTarget: "https://rpc.ankr.com/eth"},
+                clientId,
+                enableLogging: true,
+                sessionTime: 100,
+                uiConfig: {
+                  theme: "dark",
+                  loginMethodsOrder: ["email_passwordless", "facebook", "google"],
+                  appLogo: "https://web3auth.io/images/w3a-L-Favicon-1.svg",
+                },
+              });
+              const openloginAdapter = new OpenloginAdapter({
+                adapterSettings: {
+                  network: "testnet",
+                },
+              });
+              web3auth.configureAdapter(openloginAdapter);
+              await web3auth.initModal()
+
+              const response = await web3auth.connect()
+  
+              // shouldPostMessage(String(response));
+              
+            } catch (e) {
+              console.log('Error: ', e)
+              shouldPostMessage(String(e));
+            }
+
+            
+          }
+
+          setTimeout(() => {
+            connectFunction()
+          }, 250);
+
+          window.addEventListener("message", message => {
+            shouldPostMessage("Open modal");
+    
+          });
+    
+        </script>
+      </body>
+    </html>
