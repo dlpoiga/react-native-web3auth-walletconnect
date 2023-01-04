@@ -1,0 +1,35 @@
+const colors = {
+  lightblue: '#3fb9d9',
+  black: '#000000',
+  white: '#FFFFFF',
+  lightgray: '#191919',
+  darkgray: '#29292C',
+  blackfilter: 'rgba(0, 0, 0, 0.7)',
+  red: '#f61a2c',
+  blackfilterlight: 'rgba(0, 0, 0, 0.1)',
+  gray: '#918BAC',
+  whitefilter: 'rgba(255, 255, 255, 0.6)',
+  green: '#9EC700',
+  yellow: '#f6d71d',
+  grayNew: '#CBD0DC',
+  newBluew: '#88BAF4',
+  newGreen: '#2B8E16',
+  blue: '#4379E2',
+  purple: '#7B61FF',
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  shadow2: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 1,
+  },
+};
+
+export default colors;

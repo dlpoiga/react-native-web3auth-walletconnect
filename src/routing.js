@@ -1,33 +1,12 @@
 import * as React from 'react';
-import {Button, View, Text, Linking, Alert} from 'react-native';
+import {Linking} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import WalletHome from './Home';
+import Home from './containers/auth';
+import Dashboard from './containers/dashboard';
 
 const Stack = createNativeStackNavigator();
-
-function HomeScreen({navigation}) {
-  const schemeExternalApp = 'ourglass://home';
-
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Wallet"
-        onPress={() => navigation.navigate('wallethome')}
-      />
-      <Button
-        title={`Open Ourglass app [${schemeExternalApp}]`}
-        onPress={() =>
-          Linking.canOpenURL(schemeExternalApp)
-            .then(() => Linking.openURL(schemeExternalApp))
-            .catch(e => Alert.alert('Linking error', String(e)))
-        }
-      />
-    </View>
-  );
-}
 
 const linking = {
   prefixes: ['ourglasswallet://'],
@@ -58,23 +37,23 @@ const linking = {
   },
 };
 
-function App() {
+function Routing() {
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator initialRouteName="home">
         <Stack.Screen
           name="home"
-          component={HomeScreen}
+          component={Home}
           options={{headerShown: false, animation: 'none'}}
         />
         <Stack.Screen
           options={{headerShown: false, animation: 'none'}}
           name="wallethome"
-          component={WalletHome}
+          component={Dashboard}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default App;
+export default Routing;
