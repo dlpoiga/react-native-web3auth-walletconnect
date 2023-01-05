@@ -3,8 +3,9 @@ import {Linking} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Home from './containers/auth';
-import Dashboard from './containers/dashboard';
+import AuthScreen from './views/auth';
+import IntroScreen from './views/auth/introScreen';
+import Dashboard from './views/dashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,10 +41,15 @@ const linking = {
 function Routing() {
   return (
     <NavigationContainer linking={linking}>
-      <Stack.Navigator initialRouteName="home">
+      <Stack.Navigator initialRouteName="intro">
         <Stack.Screen
-          name="home"
-          component={Home}
+          name="intro"
+          component={IntroScreen}
+          options={{headerShown: false, animation: 'none'}}
+        />
+        <Stack.Screen
+          name="auth"
+          component={AuthScreen}
           options={{headerShown: false, animation: 'none'}}
         />
         <Stack.Screen

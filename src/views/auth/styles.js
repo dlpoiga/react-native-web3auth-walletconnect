@@ -2,6 +2,13 @@ import {StyleSheet} from 'react-native';
 import colors from '../../themes/colors';
 
 const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    backgroundColor: colors.lightgray,
+  },
+  scroll: {
+    backgroundColor: colors.lightgray,
+  },
   container: {
     flex: 1,
     alignItems: 'center',

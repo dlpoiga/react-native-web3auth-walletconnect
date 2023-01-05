@@ -3,13 +3,13 @@ import {SafeAreaView, Text, View, Button, ScrollView} from 'react-native';
 
 import '@walletconnect/react-native-compat';
 
-import SignClient from '@walletconnect/sign-client';
+import SignClient from '../../helpers/signClient';
 
 import styles from './styles';
 
-import WalletConnectWebView from '../../components/walletConnectWebView';
-import Web3AuthWebView from '../../components/web3authWebView';
-import Touch from '../../components/touch';
+import WalletConnectWebView from '../../components/specific/walletConnectWebView';
+import Web3AuthWebView from '../../components/specific/web3authWebView';
+import Touch from '../../components/common/touch';
 import {Store} from '../../hooks/main_store';
 
 const Dashboard = ({route, navigation}) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, View, StyleSheet, Dimensions} from 'react-native';
-import {Store} from '../../hooks/main_store';
-import colors from '../../themes/colors';
+import {Store} from '../../../hooks/main_store';
+import colors from '../../../themes/colors';
 
 const Spinner = props => {
   const {state} = React.useContext(Store);

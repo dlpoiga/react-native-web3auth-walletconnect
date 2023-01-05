@@ -1,9 +1,20 @@
 import React, {useRef, useCallback, useEffect} from 'react';
+import {View, Text} from 'react-native';
 // import PropTypes from 'prop-types';
 import {WebView} from 'react-native-webview';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Touch from '../../common/touch';
+import styles from './styles';
 
 function WalletConnectWebView({uri, onClose}) {
   const ref = useRef();
+
+  // const saveLocalAccount = async (value) => {
+  //   try {
+  //     await AsyncStorage.setItem('localAccount', value)
+  //   } catch (error) {}
+  // };
 
   const onMessage = useCallback(
     async ({nativeEvent: {data}}) => {
@@ -70,20 +81,25 @@ function WalletConnectWebView({uri, onClose}) {
   }, [uri]);
 
   return (
-    <WebView
-      ref={ref}
-      style={{
-        width: '100%',
-        height: '100%',
-      }}
-      originWhitelist={['*']}
-      onMessage={onMessage}
-      onError={onError}
-      source={{
-        baseUrl: '',
-        html: htmlValue.trim(),
-      }}
-    />
+    <View style={styles.container}>
+      <WebView
+        ref={ref}
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        originWhitelist={['*']}
+        onMessage={onMessage}
+        onError={onError}
+        source={{
+          baseUrl: '',
+          html: htmlValue.trim(),
+        }}
+      />
+      <Touch style={styles.containerbutton} onPress={() => onClose()}>
+        <Text style={styles.textButton}>Cancel process</Text>
+      </Touch>
+    </View>
   );
 }
 

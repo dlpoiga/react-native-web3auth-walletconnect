@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {Store, StoreProvider} from './hooks/main_store';
-import Spinner from './components/spinner';
+import Spinner from './components/common/spinner';
 import {StatusBar} from 'react-native';
 import model_class from './hooks/Model';
 import Routing from './routing';
