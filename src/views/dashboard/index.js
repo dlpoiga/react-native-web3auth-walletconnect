@@ -1,148 +1,111 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView, Text, View, Button, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, Button, ScrollView} from 'react-native';
 
-import '@walletconnect/react-native-compat';
+// import '@walletconnect/react-native-compat';
 
-import SignClient from '../../helpers/signClient';
+// import SignClient from '../../helpers/signClient';
 
 import styles from './styles';
 
-import WalletConnectWebView from '../../components/specific/walletConnectWebView';
-import Web3AuthWebView from '../../components/specific/web3authWebView';
+// import WalletConnectWebView from '../../components/specific/walletConnectWebView';
+// import Web3AuthWebView from '../../components/specific/web3authWebView';
 import Touch from '../../components/common/touch';
 import {Store} from '../../hooks/main_store';
 
 const Dashboard = ({route, navigation}) => {
-  const {state} = React.useContext(Store);
+  const [selectedTab, setSelectedTab] = useState(1);
 
-  const [uriValue, setUriValue] = React.useState('');
-  const [uriValueOld, setUriValueOld] = React.useState('');
-  const [authShow, setAuthShow] = React.useState(false);
-  const [errorValue, setErrorValue] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
+  const renderActions = () => {
+    const actions = [
+      {label: 'Send'},
+      {label: 'Top Up'},
+      {label: 'Swap'},
+      {label: 'Buy'},
+    ];
 
-  const initSign = async () => {
-    try {
-      setIsLoading(true);
-      setErrorValue('');
-      if (uriValueOld) {
-        setUriValue(uriValueOld);
-      } else {
-        const signClient = await SignClient.init({
-          projectId: 'ef915b605ac87cfa0ea50754539c516b',
-          metadata: {
-            name: 'Test Wallet',
-            description: 'Test Wallet',
-            url: '#',
-            icons: ['https://walletconnect.com/walletconnect-logo.png'],
-          },
-        });
-
-        const {uri} = await signClient.connect({
-          requiredNamespaces: {
-            eip155: {
-              methods: ['eth_sign'],
-              chains: ['eip155:1'],
-              events: ['accountsChanged'],
-            },
-          },
-        });
-        setUriValue(uri);
-        setUriValueOld(uri);
-      }
-
-      // console.log('Response: ', uri, Object.keys(signClient));
-    } catch (e) {
-      setErrorValue(`Error:  ${String(e)}`);
-    } finally {
-      setIsLoading(false);
-    }
+    return actions.map(action => (
+      <Touch key={action.label} style={styles.containerAction}>
+        <View style={styles.buttonAction}></View>
+        <Text style={styles.labelAction}>{action.label}</Text>
+      </Touch>
+    ));
   };
 
-  const renderContent = () => {
-    if (state?.accounts?.length < 1) {
-      return (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.noAccountMsg}>
-            User ID: {route?.params?.userId || 'Error params'}
-          </Text>
-          <Text style={styles.noAccountMsg}>
-            Hey! You don't have any account saved, please choose one of the
-            following options:
-          </Text>
+  const renderItemsList = () => {
+    const items = new Array(12)
+      .fill({id: 0})
+      .map((data, index) => ({id: data.id + index}));
 
-          {isLoading ? (
-            <Button
-              onPress={() => {
-                setUriValue('');
-                setAuthShow(false);
-                setIsLoading(false);
-              }}
-              title="Loading ..."
-            />
-          ) : (
-            <>
-              <Button title="Connect Wallet" onPress={initSign} />
-              {/* <Text style={styles.OrSeparator}>-- Or --</Text>
-          <Button
-            title="Sign in with Social"
-            onPress={() => setAuthShow(true)}
-          /> */}
-            </>
-          )}
-
-          {errorValue ? (
-            <Text style={styles.sectionDescription}>
-              Error message: {errorValue}
-            </Text>
-          ) : null}
+    return items.map(item => (
+      <Touch key={item.id} style={styles.itemList}>
+        <View style={styles.iconContainerItem}></View>
+        <View style={styles.namesContainerItem}>
+          <Text style={styles.nameItem}>BTC</Text>
+          <Text style={styles.subNameItem}>Bitcoin</Text>
         </View>
-      );
-    }
+        <View style={styles.graphContainerItem}></View>
+        <View style={styles.numbersContainerItem}>
+          <Text style={styles.priceItem}>$36,590.00</Text>
+          <Text style={styles.rateItem}>+6.21%</Text>
+        </View>
+      </Touch>
+    ));
   };
-
-  useEffect(() => {
-    console.log('Params: ', route?.params);
-  }, [route?.params]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.titleHeader}>Accounts</Text>
+        <View style={styles.balanceContainer}>
+          <View style={styles.amountBalanceContainer}>
+            <View style={styles.iconAmountBalance} />
+            <Text style={styles.textAmountBalance}>26,031</Text>
+          </View>
+          <View style={styles.labelBalanceContainer}>
+            <Text style={styles.textLabelBalanceContainer}>Balance</Text>
+          </View>
+        </View>
+        <View style={styles.blank} />
+        <Touch style={styles.qrContainer}></Touch>
         <Touch
-          onPress={() => navigation.navigate('home')}
-          style={styles.buttonLogOut}>
-          <Text style={styles.textLogOut}>Log out</Text>
+          style={styles.profileContainer}
+          onPress={() => navigation.navigate('profile')}></Touch>
+      </View>
+
+      <View style={styles.rowActions}>{renderActions()}</View>
+
+      <View style={styles.containerToggle}>
+        <Touch
+          onPress={() => setSelectedTab(1)}
+          style={[
+            styles.buttonToggle,
+            selectedTab === 1 ? styles.purpleBg : null,
+          ]}>
+          <Text
+            style={[
+              styles.labelToggle,
+              selectedTab === 1 ? styles.whiteTxt : null,
+            ]}>
+            Tokens
+          </Text>
+        </Touch>
+        <Touch
+          onPress={() => setSelectedTab(2)}
+          style={[
+            styles.buttonToggle,
+            selectedTab === 2 ? styles.purpleBg : null,
+          ]}>
+          <Text
+            style={[
+              styles.labelToggle,
+              selectedTab === 2 ? styles.whiteTxt : null,
+            ]}>
+            NFTs
+          </Text>
         </Touch>
       </View>
-      <View style={styles.body}>
-        {uriValue || authShow ? (
-          <>
-            {uriValue ? (
-              <WalletConnectWebView
-                uri={uriValue}
-                onClose={e => {
-                  setUriValue('');
-                  setErrorValue(e);
-                }}
-              />
-            ) : null}
-            {authShow ? <Web3AuthWebView /> : null}
 
-            <Button
-              title="Close connection"
-              onPress={() => {
-                setUriValue('');
-                setAuthShow(false);
-                setErrorValue('');
-              }}
-            />
-          </>
-        ) : (
-          renderContent()
-        )}
-      </View>
-    </SafeAreaView>
+      <ScrollView style={styles.listContainer}>{renderItemsList()}</ScrollView>
+    </View>
   );
 };
 

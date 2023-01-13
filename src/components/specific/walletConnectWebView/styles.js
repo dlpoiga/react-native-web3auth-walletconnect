@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'absolute',
     zIndex: 1,
+    backgroundColor: 'rgba(0,0,0, 0.75)',
   },
   containerbutton: {
     backgroundColor: colors.purple,

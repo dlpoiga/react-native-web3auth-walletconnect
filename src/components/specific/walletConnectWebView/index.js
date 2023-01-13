@@ -21,7 +21,7 @@ function WalletConnectWebView({uri, onClose}) {
       try {
         console.log('Message modal: ', data);
         if (data === 'Close modal') {
-          onClose();
+          onClose('Close modal');
         }
       } catch (e) {
         /* web */
@@ -76,7 +76,7 @@ function WalletConnectWebView({uri, onClose}) {
     if (ref.current?.postMessage) {
       setTimeout(() => {
         ref.current.postMessage(uri);
-      }, 250);
+      }, 500);
     }
   }, [uri]);
 

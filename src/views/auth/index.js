@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {View, Text, Image, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import SignClient from '../../helpers/signClient';
+import SignClient from '@walletconnect/sign-client';
 
 import styles from './styles';
 
@@ -34,6 +34,25 @@ function AuthScreen({navigation}) {
           },
         });
 
+        // signClient.on('session_event', ({event}) => {
+        //   // Handle session events, such as "chainChanged", "accountsChanged", etc.
+        //   console.log(event);
+        // });
+
+        // signClient.on('session_update', ({topic, params}) => {
+        //   const {namespaces} = params;
+        //   const _session = signClient.session.get(topic);
+        //   // Overwrite the `namespaces` of the existing session with the incoming one.
+        //   const updatedSession = {..._session, namespaces};
+        //   // Integrate the updated session state into your dapp state.
+        //   console.log(updatedSession);
+        // });
+
+        // signClient.on('session_delete', () => {
+        //   // Session was deleted -> reset the dapp state, clean up from user session, etc.
+        //   console.log('session_delete');
+        // });
+
         const {uri} = await signClient.connect({
           requiredNamespaces: {
             eip155: {
@@ -43,6 +62,7 @@ function AuthScreen({navigation}) {
             },
           },
         });
+
         setUriValue(uri);
         setUriValueOld(uri);
       }
@@ -102,7 +122,7 @@ function AuthScreen({navigation}) {
           <Text style={styles.labelButton}>Create</Text>
         </Touch>
         <Touch
-          onPress={() => initSign()}
+          onPress={() => navigation.navigate('wallethome')}
           style={[styles.button, styles.secondaryButton]}>
           <Text style={[styles.labelButton, styles.secondaryLabel]}>
             Log In
@@ -122,6 +142,9 @@ function AuthScreen({navigation}) {
           uri={uriValue}
           onClose={e => {
             setUriValue('');
+            if (e === 'Close modal') {
+              navigation.navigate('wallethome');
+            }
           }}
         />
       ) : null}

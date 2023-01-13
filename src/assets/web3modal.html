@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WalletConnect</title>
+      </head>
+
+      <body style="margin: 0; padding: 0">
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@web3modal/html/dist/index.js"></script>
+        
+        <script>
+          var Web3Modal = window?.Web3Modal; 
+
+          console.log(Web3Modal)
+
+          var shouldPostMessage = data => {
+            if (window.ReactNativeWebView) {
+              return window.ReactNativeWebView.postMessage(data);
+            }
+          };
+
+          window.addEventListener("message", message => {
+            shouldPostMessage("Open modal");
+    
+            // WalletConnectQRCodeModal.open(message.data, () => {
+            //   WalletConnectQRCodeModal.close();
+            //   shouldPostMessage("Close modal");
+            // });
+          });
+    
+        </script>
+      </body>
+    </html>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import '@walletconnect/react-native-compat';
 import {Store, StoreProvider} from './hooks/main_store';
 import Spinner from './components/common/spinner';
 import {StatusBar} from 'react-native';

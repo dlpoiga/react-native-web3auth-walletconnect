@@ -7,6 +7,7 @@ const initialState = {
   opacity: 1,
   user: null,
   accounts: [],
+  selectedWallet: 0,
   navigation: {
     navigate: () => {},
   },

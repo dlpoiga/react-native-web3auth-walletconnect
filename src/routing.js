@@ -6,6 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AuthScreen from './views/auth';
 import IntroScreen from './views/auth/introScreen';
 import Dashboard from './views/dashboard';
+import Profile from './views/profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,9 +54,14 @@ function Routing() {
           options={{headerShown: false, animation: 'none'}}
         />
         <Stack.Screen
-          options={{headerShown: false, animation: 'none'}}
+          options={{headerShown: false}}
           name="wallethome"
           component={Dashboard}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="profile"
+          component={Profile}
         />
       </Stack.Navigator>
     </NavigationContainer>
