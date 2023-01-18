@@ -7,6 +7,7 @@ import AuthScreen from './views/auth';
 import IntroScreen from './views/auth/introScreen';
 import Dashboard from './views/dashboard';
 import Profile from './views/profile';
+import Routes from './config/routes';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,7 +45,7 @@ function Routing() {
     <NavigationContainer linking={linking}>
       <Stack.Navigator initialRouteName="intro">
         <Stack.Screen
-          name="intro"
+          name={Routes.INTRO}
           component={IntroScreen}
           options={{headerShown: false, animation: 'none'}}
         />
