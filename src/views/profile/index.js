@@ -1,18 +1,12 @@
 import React, {useState} from 'react';
 import {Text, View, Image, ScrollView} from 'react-native';
-import SignClient from '@walletconnect/sign-client';
-
-// import '@walletconnect/react-native-compat';
 
 import styles from './styles';
-
-import WalletConnectWebView from '../../components/specific/walletConnectWebView';
-// import Web3AuthWebView from '../../components/specific/web3authWebView';
 import Touch from '../../components/common/touch';
 import Model from '../../hooks/Model';
 import {Store} from '../../hooks/main_store';
 
-const Profile = ({route, navigation}) => {
+const Profile = ({navigation}) => {
   const {state} = React.useContext(Store);
 
   const userWallets = [
@@ -26,66 +20,6 @@ const Profile = ({route, navigation}) => {
     {label: 'Btc 2', address: 'btcx4419952D3b64f5E72b1e8E60602f5as'},
   ];
   const [openEdit, setOpenEdit] = useState(false);
-  const [uriValue, setUriValue] = React.useState('');
-  const [uriValueOld, setUriValueOld] = React.useState('');
-
-  const initSign = async () => {
-    try {
-      Model.setStore('opacity', 0.7);
-      Model.setStore('loading', true);
-      if (uriValueOld) {
-        setUriValue(uriValueOld);
-      } else {
-        const signClient = await SignClient.init({
-          projectId: 'ef915b605ac87cfa0ea50754539c516b',
-          metadata: {
-            name: 'Test Wallet',
-            description: 'Test Wallet',
-            url: '#',
-            icons: ['https://walletconnect.com/walletconnect-logo.png'],
-          },
-        });
-
-        // signClient.on('session_event', ({event}) => {
-        //   // Handle session events, such as "chainChanged", "accountsChanged", etc.
-        //   console.log(event);
-        // });
-
-        // signClient.on('session_update', ({topic, params}) => {
-        //   const {namespaces} = params;
-        //   const _session = signClient.session.get(topic);
-        //   // Overwrite the `namespaces` of the existing session with the incoming one.
-        //   const updatedSession = {..._session, namespaces};
-        //   // Integrate the updated session state into your dapp state.
-        //   console.log(updatedSession);
-        // });
-
-        // signClient.on('session_delete', () => {
-        //   // Session was deleted -> reset the dapp state, clean up from user session, etc.
-        //   console.log('session_delete');
-        // });
-
-        const {uri} = await signClient.connect({
-          requiredNamespaces: {
-            eip155: {
-              methods: ['eth_sign'],
-              chains: ['eip155:1'],
-              events: ['accountsChanged'],
-            },
-          },
-        });
-
-        setUriValue(uri);
-        setUriValueOld(uri);
-      }
-
-      // console.log('Response: ', uri, Object.keys(signClient));
-    } catch (e) {
-      // setErrorValue(`Error:  ${String(e)}`);
-    } finally {
-      Model.setStore('loading', false);
-    }
-  };
 
   const renderWallets = () =>
     userWallets.map((wallet, index) => (
@@ -151,24 +85,8 @@ const Profile = ({route, navigation}) => {
       {openEdit ? (
         <>
           <Text style={styles.labelList}>Select default wallet</Text>
-          <ScrollView style={styles.scrollList}>
-            <Touch style={styles.addWalletButton} onPress={initSign}>
-              <Text style={styles.textConnectButton}>Add new wallet</Text>
-            </Touch>
-            {renderWallets()}
-          </ScrollView>
+          <ScrollView style={styles.scrollList}>{renderWallets()}</ScrollView>
         </>
-      ) : null}
-      {uriValue ? (
-        <WalletConnectWebView
-          uri={uriValue}
-          onClose={e => {
-            setUriValue('');
-            if (e === 'Close modal') {
-              setOpenEdit(false);
-            }
-          }}
-        />
       ) : null}
     </View>
   );

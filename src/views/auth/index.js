@@ -1,107 +1,14 @@
 import * as React from 'react';
 import {View, Text, Image, ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SignClient from '@walletconnect/sign-client';
 
 import styles from './styles';
 
 import Model from '../../hooks/Model';
-import {Store} from '../../hooks/main_store';
 import Touch from '../../components/common/touch';
-import WalletConnectWebView from '../../components/specific/walletConnectWebView';
 
 function AuthScreen({navigation}) {
-  const {state} = React.useContext(Store);
-
-  const [doneLoad, setDoneLoad] = React.useState(false);
-  const [uriValue, setUriValue] = React.useState('');
-  const [uriValueOld, setUriValueOld] = React.useState('');
-
-  const initSign = async () => {
-    try {
-      Model.setStore('opacity', 0.7);
-      Model.setStore('loading', true);
-      if (uriValueOld) {
-        setUriValue(uriValueOld);
-      } else {
-        const signClient = await SignClient.init({
-          projectId: 'ef915b605ac87cfa0ea50754539c516b',
-          metadata: {
-            name: 'Test Wallet',
-            description: 'Test Wallet',
-            url: '#',
-            icons: ['https://walletconnect.com/walletconnect-logo.png'],
-          },
-        });
-
-        // signClient.on('session_event', ({event}) => {
-        //   // Handle session events, such as "chainChanged", "accountsChanged", etc.
-        //   console.log(event);
-        // });
-
-        // signClient.on('session_update', ({topic, params}) => {
-        //   const {namespaces} = params;
-        //   const _session = signClient.session.get(topic);
-        //   // Overwrite the `namespaces` of the existing session with the incoming one.
-        //   const updatedSession = {..._session, namespaces};
-        //   // Integrate the updated session state into your dapp state.
-        //   console.log(updatedSession);
-        // });
-
-        // signClient.on('session_delete', () => {
-        //   // Session was deleted -> reset the dapp state, clean up from user session, etc.
-        //   console.log('session_delete');
-        // });
-
-        const {uri} = await signClient.connect({
-          requiredNamespaces: {
-            eip155: {
-              methods: ['eth_sign'],
-              chains: ['eip155:1'],
-              events: ['accountsChanged'],
-            },
-          },
-        });
-
-        setUriValue(uri);
-        setUriValueOld(uri);
-      }
-
-      // console.log('Response: ', uri, Object.keys(signClient));
-    } catch (e) {
-      // setErrorValue(`Error:  ${String(e)}`);
-    } finally {
-      Model.setStore('loading', false);
-    }
-  };
-
-  const getLocalAccount = async () => {
-    try {
-      const localAccount = await AsyncStorage.getItem('localAccount');
-      if (localAccount !== null) {
-        Model.setStore('user', localAccount);
-      } else {
-        Model.setStore('loading', false);
-      }
-      setDoneLoad(true);
-    } catch (error) {
-      setDoneLoad(true);
-    }
-  };
-
   React.useEffect(() => {
-    if (doneLoad) {
-      if (state.user) {
-        navigation.navigate('wallethome');
-      } else {
-        Model.setStore('loading', false);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.user, doneLoad]);
-
-  React.useEffect(() => {
-    getLocalAccount();
+    Model.setStore('loading', false);
   }, []);
 
   return (
@@ -118,7 +25,9 @@ function AuthScreen({navigation}) {
           Create a Wallet, send, receive, have your own unique QR code and
           manage your finances.
         </Text>
-        <Touch onPress={() => initSign()} style={styles.button}>
+        <Touch
+          onPress={() => navigation.navigate('wallethome')}
+          style={styles.button}>
           <Text style={styles.labelButton}>Create</Text>
         </Touch>
         <Touch
@@ -137,17 +46,6 @@ function AuthScreen({navigation}) {
         }
       /> */}
       </ScrollView>
-      {uriValue ? (
-        <WalletConnectWebView
-          uri={uriValue}
-          onClose={e => {
-            setUriValue('');
-            if (e === 'Close modal') {
-              navigation.navigate('wallethome');
-            }
-          }}
-        />
-      ) : null}
     </View>
   );
 }

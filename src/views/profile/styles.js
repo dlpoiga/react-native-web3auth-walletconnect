@@ -79,17 +79,6 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: 'transparent',
   },
-  addWalletButton: {
-    marginBottom: 18,
-    backgroundColor: colors.purple,
-    borderRadius: 6,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: colors.purple,
-  },
   textConnectButton: {
     fontSize: 14,
     color: colors.white,
