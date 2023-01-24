@@ -4,11 +4,12 @@
 
 import 'react-native';
 import React from 'react';
-import App from '../App';
+import Touch from '../src/components/common/touch';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+test('Touch renders correctly', () => {
+  const tree = renderer.create(<Touch />).toJSON();
+  expect(tree).toMatchSnapshot();
 });

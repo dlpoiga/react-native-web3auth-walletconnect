@@ -12,9 +12,9 @@ In the project directory, you can run:
 
 `npx react-native run-android`
 
-## Components - Storybook
+## Typescript files
 
-> Always when you create component you must set up its Storybook and test files
+> This project support Typescript files, so please always develop with it.
 
 ## Directory - folder structure
 
@@ -32,5 +32,28 @@ In the project directory, you can run:
     ├── services              # Complex business logic code that is used in a few different places
     ├── themes                # Global style values
     ├── views                 # Containers of components to create view
-    ├── App.js                # Config of your App
-    └── routing.js            # Routing structure and contains all views
+    ├── App.tsx               # Config of your App
+    └── routing.tsx           # Routing structure and contains all views
+
+## Test with Jest
+
+> This project support Jest and all test files must be in `__test__` folder.
+
+You can run test with this script:
+
+`yarn test`
+
+## Components - Storybook
+
+> Always when you create a component you must set up its Storybook and test files
+
+With Storybook for React Native you can design and develop individual React Native components without running your app.
+
+For more information about storybook visit: [storybook.js.org](https://storybook.js.org)
+
+You must run scripts in below order:
+
+Open a terminal and run `yarn storybook`
+Then, open other terminal and run `npx react-native start`
+
+Now you can see Stroybook dashboard in `localhost:7007`
