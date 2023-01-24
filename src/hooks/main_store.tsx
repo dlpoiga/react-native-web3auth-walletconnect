@@ -1,8 +1,16 @@
 import React from 'react';
 
-export const Store = React.createContext();
+interface initialStateProps {
+  loading: boolean;
+  opacity: number;
+  user: object | null;
+  selectedWallet: number;
+  navigation: {
+    navigate: Function;
+  };
+}
 
-const initialState = {
+const initialState: initialStateProps = {
   loading: true,
   opacity: 1,
   user: null,
@@ -22,6 +30,8 @@ function reducer(state, action) {
       return state;
   }
 }
+
+export const Store = React.createContext();
 
 export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);

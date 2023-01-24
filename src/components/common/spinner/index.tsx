@@ -3,10 +3,18 @@ import {ActivityIndicator, View, StyleSheet, Dimensions} from 'react-native';
 import {Store} from '../../../hooks/main_store';
 import colors from '../../../themes/colors';
 
-const Spinner = props => {
-  const {state} = React.useContext(Store);
-  const {width, height} = Dimensions.get('screen');
-  const styles = StyleSheet.create({
+export interface SpinnerProps {
+  style?: object;
+}
+
+interface StylesProps {
+  width: number;
+  height: number;
+  state: {opacity: number};
+}
+
+const returnStyles = ({width, height, state}: StylesProps) =>
+  StyleSheet.create({
     loader: {
       position: 'absolute',
       width,
@@ -23,8 +31,14 @@ const Spinner = props => {
       height: 200,
     },
   });
+
+const Spinner = ({style}: SpinnerProps) => {
+  const {state} = React.useContext(Store);
+  const {width, height} = Dimensions.get('screen');
+  const styles = returnStyles({width, height, state});
+
   return state.loading ? (
-    <View style={[styles.loader, props.style]}>
+    <View style={[styles.loader, style]}>
       <ActivityIndicator animating={true} size={'small'} />
     </View>
   ) : null;

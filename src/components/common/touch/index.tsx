@@ -1,13 +1,21 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 
+export interface TouchProps {
+  style?: object;
+  onPress?: Function;
+  disabled?: boolean;
+  children?: React.ReactNode;
+  activeOpacity?: number;
+}
+
 const Touch = ({
   style = {},
   onPress = () => {},
   disabled = false,
   children,
   activeOpacity = 0.8,
-}) => {
+}: TouchProps) => {
   return (
     <TouchableOpacity
       activeOpacity={activeOpacity}

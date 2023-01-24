@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Linking} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, LinkingOptions} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import AuthScreen from './views/auth';
@@ -10,32 +10,26 @@ import Profile from './views/profile';
 
 const Stack = createNativeStackNavigator();
 
-const linking = {
+const linking: LinkingOptions<{}> = {
   prefixes: ['ourglasswallet://'],
 
-  // Custom function to get the URL which was used to open the app
   async getInitialURL() {
-    // As a fallback, you may want to do the default deep link handling
     const url = await Linking.getInitialURL();
-
     return url;
   },
 
-  // Custom function to subscribe to incoming links
   subscribe(listener) {
-    // Listen to incoming links from deep linking
     const linkingSubscription = Linking.addEventListener('url', ({url}) => {
       listener(url);
     });
 
     return () => {
-      // Clean up the event listeners
       linkingSubscription.remove();
     };
   },
 
   config: {
-    // Deep link configuration
+    screens: [],
   },
 };
 
