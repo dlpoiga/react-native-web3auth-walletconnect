@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>ourglasswallet</string>
+				<string>itms-apps</string>
 			</array>
 		</dict>
 	</array>
@@ -40,6 +41,7 @@
 		<string>bridge.walletconnect.org</string>
 		<string>msauth.org.reactjs.native.example.myapp</string>
 		<string>org.reactjs.native.example.myapp</string>
+		<string>itms-apps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

@@ -1,14 +1,16 @@
-import React, {useRef, useCallback, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React, {useRef, useCallback, useEffect, useState} from 'react';
+import {View, Text, Linking} from 'react-native';
 // import PropTypes from 'prop-types';
 import {WebView} from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Touch from '../../common/touch';
+import Model from '../../../hooks/Model';
 import styles from './styles';
 
 function WalletConnectWebView({uri, onClose}) {
   const ref = useRef();
+  const [lastUrl, setLastUrl] = useState('');
 
   // const saveLocalAccount = async (value) => {
   //   try {
@@ -32,7 +34,12 @@ function WalletConnectWebView({uri, onClose}) {
 
   const onError = useCallback(
     async e => {
-      // console.log('Error modal: ', e?.nativeEvent?.description);
+      // console.log('Error modal: ', e);
+      // Linking.canOpenURL(e?.nativeEvent?.url)
+      //   .then(() => {
+      //     return Linking.openURL(e?.nativeEvent?.url);
+      //   })
+      //   .catch(e => console.loog(e));
       onClose(e?.nativeEvent?.description);
     },
     [onClose],
@@ -80,6 +87,23 @@ function WalletConnectWebView({uri, onClose}) {
     }
   }, [uri]);
 
+  useEffect(() => {
+    if (lastUrl && lastUrl.includes('http')) {
+      Model.setStore('loading', true);
+      setTimeout(() => {
+        Linking.canOpenURL(lastUrl)
+          .then(() => {
+            return Linking.openURL(lastUrl);
+          })
+          .then(() => {
+            Model.setStore('loading', false);
+          })
+          .catch(e => console.log('Error open link: ', e))
+          .finally(() => Model.setStore('loading', false));
+      }, 2000);
+    }
+  }, [lastUrl]);
+
   return (
     <View style={styles.container}>
       <WebView
@@ -94,6 +118,10 @@ function WalletConnectWebView({uri, onClose}) {
         source={{
           baseUrl: '',
           html: htmlValue.trim(),
+        }}
+        onLoadStart={e => {
+          // console.log('Load: ', e?.nativeEvent?.url);
+          setLastUrl(e?.nativeEvent?.url || '');
         }}
       />
       <Touch style={styles.containerbutton} onPress={() => onClose()}>

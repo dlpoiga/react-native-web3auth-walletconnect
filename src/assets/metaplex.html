@@ -1,16 +1,31 @@
 <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Web3Auth</title>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WalletConnect</title>
+  </head>
 
-      </head>
+  <body style="margin: 0; padding: 0">
+    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/qrcode-modal@1.8.0/dist/umd/index.min.js"></script>
+    <script>
+      var WalletConnectQRCodeModal = window.WalletConnectQRCodeModal.default; 
 
-      <body style="margin: 0; padding: 0; height: 100vh;">
-        <script src="https://cdn.jsdelivr.net/npm/@metaplex-foundation/js@0.17.11/dist/cjs/index.cjs"></script>
-        <script>
-          console.log(Object.keys(window))
-        </script>
-      </body>
-    </html>
+      var shouldPostMessage = data => {
+        if (window.ReactNativeWebView) {
+          return window.ReactNativeWebView.postMessage(data);
+        }
+      };
+
+      window.addEventListener("message", message => {
+        shouldPostMessage("Open modal");
+
+        WalletConnectQRCodeModal.open(message.data, () => {
+          WalletConnectQRCodeModal.close();
+          shouldPostMessage("Close modal");
+        });
+      });
+
+    </script>
+  </body>
+</html>
